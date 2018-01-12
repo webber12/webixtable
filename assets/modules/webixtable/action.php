@@ -9,7 +9,7 @@ if (empty ($modx->config)) {
     $modx->getSettings();
 }
 
-if (!isset($_SESSION['mgrValidated'])) {
+if (!isset($_SESSION['mgrValidated']) || !$modx->hasPermission('exec_module')) {
     die();
 }
 
