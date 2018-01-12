@@ -1,7 +1,4 @@
 <?php
-/*
-if(IN_MANAGER_MODE!='true' && !$modx->hasPermission('exec_module')) die('<b>INCLUDE_ORDERING_ERROR</b><br /><br />Please use the MODX Content Manager instead of accessing this file directly.');
-*/
 
 define('MODX_API_MODE', true);
 define('IN_MANAGER_MODE', true);
@@ -12,7 +9,7 @@ if (empty ($modx->config)) {
     $modx->getSettings();
 }
 
-if(!isset($_SESSION['mgrValidated'])){
+if (!isset($_SESSION['mgrValidated'])) {
     die();
 }
 
@@ -31,7 +28,7 @@ $fields = isset($fields) ? explode(',', str_replace(', ', ',', trim($fields))) :
 $fields_names = isset($fields_names) ? explode(',', str_replace(', ', ',', trim($fields_names))) : false;
 $table = isset($table) ? trim($table) : false;
 
-$modx->logEvent(1,1,json_encode($_REQUEST),'REQUEST');
+//$modx->logEvent(1,1,json_encode($_REQUEST),'REQUEST');
 
 //начинаем...
 $out = '';
@@ -69,7 +66,6 @@ switch($action) {
         break;
         
     case 'list':
-        $modx->logEvent(1,1,'list','list');
         $DLparams = array(
             'controller' => 'onetable',
             'table' => $table,
@@ -86,12 +82,10 @@ switch($action) {
         );
         //имеем запрос с сервера
         if (isset($_REQUEST['continue']) && $_REQUEST['continue'] == 'true') {
-            $modx->logEvent(1,1,'continue','continue');
             if (isset($_REQUEST['sort'])) {
                 $sortBy = implode('', array_keys($_REQUEST['sort']));
                 $sortDir = strtoupper(implode('', array_values($_REQUEST['sort'])));
                 $orderBy = $sortBy . ' ' . $sortDir;
-                $modx->logEvent(1,1,$orderBy,'orderBy');
                 $DLparams['orderBy'] = $orderBy;
             }
             if (isset($_REQUEST['start'])) {
@@ -109,9 +103,7 @@ switch($action) {
                 }
             }
         }
-        $modx->logEvent(1,1,json_encode($DLparams),'DLparams');
         $tmp = $modx->runSnippet("DocLister", $DLparams);
-        $modx->logEvent(1,1,$tmp,'DocLister');
         
         $tmp2 = json_decode($tmp, TRUE);
         $rows = $tmp2['rows'];
