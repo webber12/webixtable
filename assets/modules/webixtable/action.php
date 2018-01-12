@@ -16,7 +16,7 @@ if(!isset($_SESSION['mgrValidated'])){
     die();
 }
 
-//ïàðñèì ñâîéñòâà ìîäóëÿ íà ïðåäìåò íóæíûõ íàñòðîåê
+//Ð¿Ð°Ñ€ÑÐ¸Ð¼ ÑÐ²Ð¾Ð¹ÑÑ‚Ð²Ð° Ð¼Ð¾Ð´ÑƒÐ»Ñ Ð½Ð° Ð¿Ñ€ÐµÐ´Ð¼ÐµÑ‚ Ð½ÑƒÐ¶Ð½Ñ‹Ñ… Ð½Ð°ÑÑ‚Ñ€Ð¾ÐµÐº
 if (isset($_REQUEST['module_id']) && (int)$_REQUEST['module_id'] > 0) {
     $prop = $modx->db->getValue("SELECT properties FROM " . $modx->getFullTableName("site_modules") . " WHERE id=" . (int)$_REQUEST['module_id'] . " LIMIT 0,1");
     if ($prop) {
@@ -33,7 +33,7 @@ $table = isset($table) ? trim($table) : false;
 
 $modx->logEvent(1,1,json_encode($_REQUEST),'REQUEST');
 
-//íà÷èíàåì...
+//Ð½Ð°Ñ‡Ð¸Ð½Ð°ÐµÐ¼...
 $out = '';
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 switch($action) {
@@ -84,7 +84,7 @@ switch($action) {
                 return $data;
             }
         );
-        //èìååì çàïðîñ ñ ñåðâåðà
+        //Ð¸Ð¼ÐµÐµÐ¼ Ð·Ð°Ð¿Ñ€Ð¾Ñ Ñ ÑÐµÑ€Ð²ÐµÑ€Ð°
         if (isset($_REQUEST['continue']) && $_REQUEST['continue'] == 'true') {
             $modx->logEvent(1,1,'continue','continue');
             if (isset($_REQUEST['sort'])) {
