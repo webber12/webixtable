@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
+    <link rel="stylesheet" href="media/style/common/font-awesome/css/font-awesome.min.css?v=4.7.0">
     <link rel="stylesheet" href="[+module_url+]skin/webix.css" type="text/css">
     <script src="[+module_url+]skin/webix.js" type="text/javascript"></script>
     <script src="[+module_url+]skin/skin.js" type="text/javascript"></script>
