@@ -5,7 +5,6 @@
     <link href="https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700&amp;subset=cyrillic" rel="stylesheet">
     <link rel="stylesheet" href="[+module_url+]skin/webix.css" type="text/css">
     <script src="[+module_url+]skin/webix.js" type="text/javascript"></script>
-    <script src="[+module_url+]skin/skin.js" type="text/javascript"></script>
     </head>
     <body style="background-color: #fafafa;">
         <div id="wbx_table" style="padding-bottom:20px;"></div>
@@ -18,9 +17,9 @@
                 rows:[
                     { view:"template", type:"header", template:"[+name+]"},
                     { view:"toolbar", id:"mybar", elements:[
-                        { view:"button", value:"Добавить", width:100, click:"add_row"}, 
-                        { view:"button", value:"Удалить", width:100, click:"del_row" },
-                        { view:"button", value:"Обновить", width:100, click:"refresh" }]
+                        { view:"button", type:"iconButton", icon:"plus", label:"Добавить", width:110, click:"add_row"}, 
+                        { view:"button", type:"iconButton", icon:"trash",  label:"Удалить", width:110, click:"del_row" }/*,
+                        { view:"button", value:"Обновить", width:100, click:"refresh" }*/]
                     },
                     { view:"datatable",
                         autoheight:true,select:"row",resizeColumn:true,
