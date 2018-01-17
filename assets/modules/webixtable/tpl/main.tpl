@@ -5,6 +5,8 @@
     <link href="https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700&amp;subset=cyrillic" rel="stylesheet">
     <link rel="stylesheet" href="[+module_url+]skin/webix.css" type="text/css">
     <style>
+        body.webix_full_screen{overflow:auto !important;}
+        .webix_view.webix_pager{margin-bottom:30px;}
         .webix_cell{-webkit-transition: all .3s,-moz-transition: all .3s,-o-transition: all .3s,transition: all .3s}
         .webix_cell:nth-child(odd){background-color:#f6f8f8;}
         .webix_cell:hover{background-color: rgba(93, 109, 202, 0.16);}

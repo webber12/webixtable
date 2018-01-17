@@ -27,6 +27,7 @@ $idField = isset($idField) ? trim($idField) : false;
 $fields = isset($fields) ? explode(',', str_replace(', ', ',', trim($fields))) : false;
 $fields_names = isset($fields_names) ? explode(',', str_replace(', ', ',', trim($fields_names))) : false;
 $table = isset($table) ? trim($table) : false;
+$display = isset($display) && (int)$display > 0 ? (int)$display : 10;
 
 //$modx->logEvent(1,1,json_encode($_REQUEST),'REQUEST');
 
@@ -75,7 +76,7 @@ switch($action) {
             'idField' => $idField,
             'idType' => 'documents',
             'ignoreEmpty' => '1',
-            'display' => '10',
+            'display' => $display,
             'prepare' => function($data, $modx, $_DL, $_extDocLister) {
                 return $data;
             }
