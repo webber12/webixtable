@@ -8,6 +8,7 @@ $display = (int)trim($display) > 0 ? (int)trim($display) : 10;
 $fields = explode(',', str_replace(', ', ',', trim($fields)));
 $fields_names = explode(',', str_replace(', ', ',', trim($fields_names)));
 $fields_for_popup_editor = explode(',', str_replace(', ', ',', trim($fields_for_popup_editor)));
+$tpl = isset($tpl) && file_exists(MODX_BASE_PATH . '/assets/modules/webixtable/tpl/' . trim($tpl) . '.tpl') ? trim($tpl) : 'main';
 
 $columns = array();
 foreach ($fields as $k => $field) {
@@ -29,6 +30,6 @@ $plh = array(
 		'name' => $name
 );
 
-$tpl = file_get_contents($module_url . 'tpl/main.tpl');
+$tpl = file_get_contents($module_url . 'tpl/' . $tpl . '.tpl');
 $output .= $modx->parseText($tpl, $plh);
 echo $output;
