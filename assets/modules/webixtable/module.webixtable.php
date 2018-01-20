@@ -12,7 +12,18 @@ $tpl = isset($tpl) && file_exists(MODX_BASE_PATH . '/assets/modules/webixtable/t
 
 $columns = array();
 foreach ($fields as $k => $field) {
-    $tmp = array('id' => $field, header => array($fields_names[$k], array("content" => "serverFilter")), 'sort' => 'server', 'editor' => in_array($field, $fields_for_popup_editor) ? 'popup' : 'text', 'adjust' => true);
+    switch (true) {
+        case in_array($field, $fields_for_popup_editor):
+            $editor = 'popup';
+            break;
+        case $field == 'date':
+            $editor = 'date';
+            break;
+        default:
+            $editor = 'text';
+            break;
+    }
+    $tmp = array('id' => $field, header => array($fields_names[$k], array("content" => "serverFilter")), 'sort' => 'server', 'editor' => $editor, 'adjust' => true);
     if ($idField == $field) {
         unset($tmp['editor']);
     }

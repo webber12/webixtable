@@ -18,7 +18,23 @@
     
         <script type="text/javascript" charset="utf-8">
 
-        webix.ready(function(){
+        webix.ready(function() {
+            webix.editors.$popup = {
+                date:{
+                    view:"popup",
+                    body:{ 
+                        view:"calendar", 
+                        timepicker:true, 
+                        timepickerHeight:50,
+                        width: 320, 
+                        height:300
+                    }
+                },
+                text:{
+                    view:"popup", 
+                    body:{view:"textarea", width:350, height:150}
+                }
+            };
             webix.ui({
                 container:"wbx_table",
                 rows:[
