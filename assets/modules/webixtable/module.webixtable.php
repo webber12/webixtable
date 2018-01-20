@@ -16,7 +16,7 @@ foreach ($fields as $k => $field) {
         case in_array($field, $fields_for_popup_editor):
             $editor = 'popup';
             break;
-        case $field == 'date':
+        case ($field == 'date' || preg_match('/^date_/', $field)):
             $editor = 'date';
             break;
         default:
