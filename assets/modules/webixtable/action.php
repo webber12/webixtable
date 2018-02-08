@@ -107,7 +107,7 @@ switch($action) {
             if (isset($_REQUEST['filter'])) {
                 $tmp = array();
                 foreach ($fields as $field) {
-                    if (isset($_REQUEST['filter'][$field]) && !empty($_REQUEST['filter'][$field]) && $_REQUEST['filter'][$field] != "") {
+                    if (isset($_REQUEST['filter'][$field]) && $_REQUEST['filter'][$field] != "") {
                      if (in_array($field,$filterEq))
                       $tmp[] = "`" . $field . "` = '" . $modx->db->escape($_REQUEST['filter'][$field]) . "'";
                      else 
