@@ -28,6 +28,7 @@ $fields = isset($fields) ? explode(',', str_replace(', ', ',', trim($fields))) :
 $fields_names = isset($fields_names) ? explode(',', str_replace(', ', ',', trim($fields_names))) : false;
 $table = isset($table) ? trim($table) : false;
 $display = isset($display) && (int)$display > 0 ? (int)$display : 10;
+$filterEq = isset($filterEq) ? explode(',', str_replace(', ', ',', trim($filterEq))) : false;
 
 //$modx->logEvent(1,1,json_encode($_REQUEST),'REQUEST');
 
@@ -107,7 +108,10 @@ switch($action) {
                 $tmp = array();
                 foreach ($fields as $field) {
                     if (isset($_REQUEST['filter'][$field]) && !empty($_REQUEST['filter'][$field]) && $_REQUEST['filter'][$field] != "") {
-                        $tmp[] = "`" . $field . "` LIKE '%" . $modx->db->escape($_REQUEST['filter'][$field]) . "%'";
+                     if (in_array($field,$filterEq))
+                      $tmp[] = "`" . $field . "` = '" . $modx->db->escape($_REQUEST['filter'][$field]) . "'";
+                     else 
+                      $tmp[] = "`" . $field . "` LIKE '%" . $modx->db->escape($_REQUEST['filter'][$field]) . "%'";
                     }
                 }
                 if (!empty($tmp)) {
