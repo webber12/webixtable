@@ -10,8 +10,8 @@ $fields_names = explode(',', str_replace(', ', ',', trim($fields_names)));
 $fields_for_popup_editor = explode(',', str_replace(', ', ',', trim($fields_for_popup_editor)));
 $tpl = isset($tpl) && file_exists(MODX_BASE_PATH . '/assets/modules/webixtable/tpl/' . trim($tpl) . '.tpl') ? trim($tpl) : 'main';
 $inline_edit = isset($inline_edit) && $inline_edit == '1' ? 'true' : 'false';
-$modal_edit_btn = isset($modal_edit) && $modal_edit == '1' ? '{ view:"button", type:"iconButton", icon:"pencil",  label:"ÐŸÑ€Ð°Ð²ÐºÐ°", width:110, click:"edit_row" },' : '';
-
+$modal_edit_btn = isset($modal_edit) && $modal_edit == '1' ? '{ view:"button", type:"iconButton", icon:"pencil",  label:"Ïðàâêà", width:110, click:"edit_row" },' : '';
+$table = isset($table) ? trim($table) : false;
 $columns = array();
 foreach ($fields as $k => $field) {
     switch (true) {
@@ -48,7 +48,8 @@ $plh = array(
     'name' => $name,
     'formfields' => substr($formfields, 1, -1),
     'inline_edit' => $inline_edit,
-    'modal_edit_btn' => $modal_edit_btn
+    'modal_edit_btn' => $modal_edit_btn,
+    'table' => $table
 );
 
 $tpl = file_get_contents($module_url . 'tpl/' . $tpl . '.tpl');
