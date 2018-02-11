@@ -28,6 +28,7 @@ $fields = isset($fields) ? explode(',', str_replace(', ', ',', trim($fields))) :
 $fields_names = isset($fields_names) ? explode(',', str_replace(', ', ',', trim($fields_names))) : false;
 $table = isset($table) ? trim($table) : false;
 $display = isset($display) && (int)$display > 0 ? (int)$display : 10;
+$filterEq = isset($filterEq) ? explode(',', str_replace(', ', ',', trim($filterEq))) : false;
 
 //$modx->logEvent(1,1,json_encode($_REQUEST),'REQUEST');
 
@@ -46,6 +47,11 @@ switch($action) {
         switch ($opetarion) {
             case 'update':
                 if (!empty($arr) && isset($arr[$idField]) && $arr[$idField] != '') {
+                    foreach ($arr as $k => $v) {
+                        if (preg_match('/^href_/', $k)) {//удаляем преобразованные в ссылки адреса
+                            unset($arr[$k]);
+                        }
+                    }
                     $modx->db->update($arr, $modx->getFullTableName($table), "`" . $idField . "`='" . $arr[$idField] . "'");
                 }
                 break;
@@ -78,6 +84,12 @@ switch($action) {
             'ignoreEmpty' => '1',
             'display' => $display,
             'prepare' => function($data, $modx, $_DL, $_extDocLister) {
+                foreach ($data as $k => $v) {
+                    if (preg_match('/^href_/', $k)) {
+                        $v = MODX_SITE_URL . ltrim($v, '/');
+                        $data[$k] = '<a href="' . $v . '" target="_blank"><i class="fa fa-download" aria-hidden="true"></i></a>';
+                    }
+                }
                 return $data;
             }
         );
@@ -95,8 +107,11 @@ switch($action) {
             if (isset($_REQUEST['filter'])) {
                 $tmp = array();
                 foreach ($fields as $field) {
-                    if (isset($_REQUEST['filter'][$field]) && !empty($_REQUEST['filter'][$field]) && $_REQUEST['filter'][$field] != "") {
-                        $tmp[] = "`" . $field . "` LIKE '%" . $modx->db->escape($_REQUEST['filter'][$field]) . "%'";
+                    if (isset($_REQUEST['filter'][$field]) && $_REQUEST['filter'][$field] != "") {
+                     if (in_array($field,$filterEq))
+                      $tmp[] = "`" . $field . "` = '" . $modx->db->escape($_REQUEST['filter'][$field]) . "'";
+                     else 
+                      $tmp[] = "`" . $field . "` LIKE '%" . $modx->db->escape($_REQUEST['filter'][$field]) . "%'";
                     }
                 }
                 if (!empty($tmp)) {
@@ -116,6 +131,39 @@ switch($action) {
     case 'get_next':
         $max = $modx->db->getValue("SELECT MAX(`" . $idField . "`) FROM " . $modx->getFullTableName($table));
         $out .= $max ? ($max + 1) : 1;
+        break;
+
+    case 'get_row'://получаем данные для формы в модальное окно
+        if (isset($_REQUEST['key']) && $_REQUEST['key'] != '') {
+            $key = $modx->db->escape($_REQUEST['key']);
+            $q = $modx->db->query("SELECT * FROM " . $modx->getFullTableName($table) . " WHERE `" . $idField . "`='" . $key . "' LIMIT 0,1");
+            if ($modx->db->getRecordCount($q) == 1) {
+                $row = $modx->db->getRow($q);
+                foreach ($row as $k => $v) {
+                    if (!in_array($k, $fields)) {
+                        unset($row[$k]);
+                    }
+                }
+                $out .= json_encode($row);
+            }
+        }
+        break;
+
+    case 'update_row'://обновляем данные из формы в модальном окне
+        $arr = array();
+        $resp = 'error';
+        foreach ($fields as $field) {
+            if (isset($_REQUEST[$field])) {
+                $arr[$field] = $modx->db->escape($_REQUEST[$field]);
+            }
+        }
+        if (!empty($arr) && isset($arr[$idField]) && $arr[$idField] != '') {
+            $up = $modx->db->update($arr, $modx->getFullTableName($table), "`" . $idField . "`='" . $arr[$idField] . "'");
+            if ($up) {
+                $resp = 'ok';
+            }
+        }
+        $out = $resp;
         break;
 
     default:
