@@ -50,7 +50,7 @@
                         }}
                     ]},
                     {rows : [
-                        {template:"The End:)", type:"section"}
+                        {template:"The End", type:"section"}
                     ]}
                 ],
                 rules:{},
@@ -90,7 +90,7 @@
                     { view:"datatable",
                         autoheight:true,select:"row",resizeColumn:true,
                         id:"mydatatable",
-                        editable:true,
+                        editable:[+inline_edit+],
                         editaction: "dblclick",
                         datafetch:[+display+],
                         navigation:true,

@@ -39,6 +39,7 @@ foreach ($fields as $k => $field) {
 }
 $cols = json_encode($columns);
 $module_id = (int)$_GET['id'];
+$formfields = json_encode($form_fields);
 
 $plh = array(
     'module_id' => $module_id,
