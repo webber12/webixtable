@@ -2,7 +2,8 @@
 if(!isset($_SESSION['mgrValidated']) || !$modx->hasPermission('exec_module')){
     die();
 }
-$module_url = MODX_SITE_URL . 'assets/modules/webixtable/';
+$module_folder = 'webixtable';
+$module_url = MODX_SITE_URL . 'assets/modules/' . $module_folder . '/';
 $idField = trim($idField);
 $display = (int)trim($display) > 0 ? (int)trim($display) : 10;
 $fields = explode(',', str_replace(', ', ',', trim($fields)));
@@ -11,7 +12,7 @@ $fields_for_popup_editor = explode(',', str_replace(', ', ',', trim($fields_for_
 $fields_for_selector_filter = explode(',', str_replace(', ', ',', trim($fields_for_selector_filter)));
 $fields_readonly = explode(',', str_replace(', ', ',', trim($fields_readonly)));
 $fields_readonly[] = $idField;
-$tpl = isset($tpl) && file_exists(MODX_BASE_PATH . '/assets/modules/webixtable/tpl/' . trim($tpl) . '.tpl') ? trim($tpl) : 'main';
+$tpl = isset($tpl) && file_exists(MODX_BASE_PATH . '/assets/modules/' . $module_folder . '/tpl/' . trim($tpl) . '.tpl') ? trim($tpl) : 'main';
 $inline_edit = isset($inline_edit) && $inline_edit == '1' ? 'true' : 'false';
 $modal_edit_btn = isset($modal_edit) && $modal_edit == '1' ? '{ view:"button", type:"iconButton", icon:"pencil",  label:"Правка", width:110, click:"edit_row" },' : '';
 $table = isset($table) ? trim($table) : false;
