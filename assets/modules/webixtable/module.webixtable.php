@@ -8,6 +8,9 @@ $display = (int)trim($display) > 0 ? (int)trim($display) : 10;
 $fields = explode(',', str_replace(', ', ',', trim($fields)));
 $fields_names = explode(',', str_replace(', ', ',', trim($fields_names)));
 $fields_for_popup_editor = explode(',', str_replace(', ', ',', trim($fields_for_popup_editor)));
+$fields_for_selector_filter = explode(',', str_replace(', ', ',', trim($fields_for_selector_filter)));
+$fields_readonly = explode(',', str_replace(', ', ',', trim($fields_readonly)));
+$fields_readonly[] = $idField;
 $tpl = isset($tpl) && file_exists(MODX_BASE_PATH . '/assets/modules/webixtable/tpl/' . trim($tpl) . '.tpl') ? trim($tpl) : 'main';
 $inline_edit = isset($inline_edit) && $inline_edit == '1' ? 'true' : 'false';
 $modal_edit_btn = isset($modal_edit) && $modal_edit == '1' ? '{ view:"button", type:"iconButton", icon:"pencil",  label:"Правка", width:110, click:"edit_row" },' : '';
@@ -30,7 +33,10 @@ foreach ($fields as $k => $field) {
             break;
     }
     $tmp = array('id' => $field, header => array($fields_names[$k], array("content" => "serverFilter")), 'sort' => 'server', 'editor' => $editor, 'adjust' => true);
-    if ($idField == $field) {
+    if (in_array($field, $fields_for_selector_filter)) {
+        $tmp['header'] = array($fields_names[$k], array("content" => "serverSelectFilter"));
+    }
+    if (in_array($field, $fields_readonly)) {
         unset($tmp['editor']);
         $formview['readonly'] = true;
     }
