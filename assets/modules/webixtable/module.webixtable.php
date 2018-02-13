@@ -17,6 +17,22 @@ $inline_edit = isset($inline_edit) && $inline_edit == '1' ? 'true' : 'false';
 $modal_edit_btn = isset($modal_edit) && $modal_edit == '1' ? '{ view:"button", type:"iconButton", icon:"pencil",  label:"Правка", width:110, click:"edit_row" },' : '';
 $table = isset($table) ? trim($table) : false;
 
+if (!function_exists(getSelectValues)) {
+    function getSelectValues($modx, $field, $table) {
+        $out = array();
+        $i = 0;
+        $out[$i] = array('id' => '', 'value' => '');
+        if ($field && $table) {
+            $q = $modx->db->query("SELECT DISTINCT(" . $field . ") as field FROM " . $modx->getFullTableName($table) . " ORDER BY field ASC");
+            while ($row = $modx->db->getRow($q)) {
+                $i++;
+                $out[$i] = array('id' => $row['field'], 'value' => $row['field']);
+            }
+        }
+        return $out;
+    }
+}
+
 $columns = array();
 foreach ($fields as $k => $field) {
     switch (true) {
@@ -35,7 +51,7 @@ foreach ($fields as $k => $field) {
     }
     $tmp = array('id' => $field, header => array($fields_names[$k], array("content" => "serverFilter")), 'sort' => 'server', 'editor' => $editor, 'adjust' => true);
     if (in_array($field, $fields_for_selector_filter)) {
-        $tmp['header'] = array($fields_names[$k], array("content" => "serverSelectFilter"));
+        $tmp['header'] = array($fields_names[$k], array("content" => "serverSelectFilter", "options" => getSelectValues($modx, $field, $table)));
     }
     if (in_array($field, $fields_readonly)) {
         unset($tmp['editor']);
