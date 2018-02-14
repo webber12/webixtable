@@ -29,6 +29,7 @@ $fields_names = isset($fields_names) ? explode(',', str_replace(', ', ',', trim(
 $table = isset($table) ? trim($table) : false;
 $display = isset($display) && (int)$display > 0 ? (int)$display : 10;
 $fields_for_selector_filter = isset($fields_for_selector_filter) ? explode(',', str_replace(', ', ',', trim($fields_for_selector_filter))) : array();
+$field_for_date_filter = isset($field_for_date_filter) && trim($field_for_date_filter) != '' ? trim($field_for_date_filter) : false;
 
 //$modx->logEvent(1,1,json_encode($_REQUEST),'REQUEST');
 
@@ -93,6 +94,7 @@ switch($action) {
                 return $data;
             }
         );
+        $addwehere = array();
         //имеем запрос с сервера
         if (isset($_REQUEST['continue']) && $_REQUEST['continue'] == 'true') {
             if (isset($_REQUEST['sort'])) {
@@ -110,19 +112,30 @@ switch($action) {
                     if (isset($_REQUEST['filter'][$field]) && !empty($_REQUEST['filter'][$field]) && $_REQUEST['filter'][$field] != "") {
                         switch (true) {
                             case (in_array($field, $fields_for_selector_filter)):
-                                $tmp[] = "`" . $field . "`='" . $modx->db->escape($_REQUEST['filter'][$field]) . "'";
+                                $addwehere[] = "`" . $field . "`='" . $modx->db->escape($_REQUEST['filter'][$field]) . "'";
                                 break;
                             default:
-                                $tmp[] = "`" . $field . "` LIKE '%" . $modx->db->escape($_REQUEST['filter'][$field]) . "%'";
+                                $addwehere[] = "`" . $field . "` LIKE '%" . $modx->db->escape($_REQUEST['filter'][$field]) . "%'";
                                 break;
                         }
                     }
                 }
-                if (!empty($tmp)) {
-                    $DLparams['addWhereList'] = implode(" AND ", $tmp);
-                }
             }
         }
+        if ($field_for_date_filter) {
+            if (isset($_REQUEST[$field_for_date_filter . '_from']) && $_REQUEST[$field_for_date_filter . '_from'] != '') {
+                $_from = date("Y-m-d", strtotime($_REQUEST[$field_for_date_filter . '_from'])) . " 00:00:00";
+                $addwehere[] = "`" . $field_for_date_filter . "`>='" . $_from . "' ";
+            }
+            if (isset($_REQUEST[$field_for_date_filter . '_to']) && $_REQUEST[$field_for_date_filter . '_to'] != '') {
+                $_to = date("Y-m-d", strtotime($_REQUEST[$field_for_date_filter . '_to'])) . " 23:59:59";
+                $addwehere[] = "`" . $field_for_date_filter . "`<= '" . $_to . "' ";
+            }
+        }
+        if (!empty($addwehere)) {
+            $DLparams['addWhereList'] = implode(" AND ", $addwehere);
+        }
+        
         $tmp = $modx->runSnippet("DocLister", $DLparams);
         
         $tmp2 = json_decode($tmp, TRUE);
