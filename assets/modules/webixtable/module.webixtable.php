@@ -2,7 +2,7 @@
 if(!isset($_SESSION['mgrValidated']) || !$modx->hasPermission('exec_module')){
     die();
 }
-$module_folder = 'webixtabletest';
+$module_folder = 'webixtable';
 $module_url = MODX_SITE_URL . 'assets/modules/' . $module_folder . '/';
 $idField = trim($idField);
 $display = (int)trim($display) > 0 ? (int)trim($display) : 10;
