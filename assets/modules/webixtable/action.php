@@ -23,14 +23,19 @@ if (isset($_REQUEST['module_id']) && (int)$_REQUEST['module_id'] > 0) {
         }
     }
 }
+if (!function_exists(makeArrayFromStr)) {
+    function makeArrayFromStr($str, $sep = ',') {
+        return array_map('trim', explode($sep, $str));
+    }
+}
 $idField = isset($idField) ? trim($idField) : false;
-$fields = isset($fields) ? explode(',', str_replace(', ', ',', trim($fields))) : false;
-$fields_names = isset($fields_names) ? explode(',', str_replace(', ', ',', trim($fields_names))) : false;
-$fields_modalform = isset($fields_modalform) ? explode(',', str_replace(', ', ',', trim($fields_modalform))) : $fields;
-$fields_modalform_names = isset($fields_modalform_names) ? explode(',', str_replace(', ', ',', trim($fields_modalform_names))) : $fields_names;
+$fields = isset($fields) ? makeArrayFromStr($fields) : false;
+$fields_names = isset($fields_names) ? makeArrayFromStr($fields_names) : false;
+$fields_modalform = isset($fields_modalform) ? makeArrayFromStr($fields_modalform) : $fields;
+$fields_modalform_names = isset($fields_modalform_names) ? makeArrayFromStr($fields_modalform_names) : $fields_names;
 $table = isset($table) ? trim($table) : false;
 $display = isset($display) && (int)$display > 0 ? (int)$display : 10;
-$fields_for_selector_filter = isset($fields_for_selector_filter) ? explode(',', str_replace(', ', ',', trim($fields_for_selector_filter))) : array();
+$fields_for_selector_filter = isset($fields_for_selector_filter) ? makeArrayFromStr($fields_for_selector_filter) : array();
 $field_for_date_filter = isset($field_for_date_filter) && trim($field_for_date_filter) != '' ? trim($field_for_date_filter) : false;
 
 //$modx->logEvent(1,1,json_encode($_REQUEST),'REQUEST');

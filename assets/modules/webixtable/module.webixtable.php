@@ -2,15 +2,20 @@
 if(!isset($_SESSION['mgrValidated']) || !$modx->hasPermission('exec_module')){
     die();
 }
+if (!function_exists(makeArrayFromStr)) {
+    function makeArrayFromStr($str, $sep = ',') {
+        return array_map('trim', explode($sep, $str));
+    }
+}
 $module_folder = 'webixtable';
 $module_url = MODX_SITE_URL . 'assets/modules/' . $module_folder . '/';
 $idField = trim($idField);
 $display = (int)trim($display) > 0 ? (int)trim($display) : 10;
-$fields = explode(',', str_replace(', ', ',', trim($fields)));
-$fields_names = explode(',', str_replace(', ', ',', trim($fields_names)));
+$fields = makeArrayFromStr($fields);
+$fields_names = makeArrayFromStr($fields_names);
 if (isset($fields_modalform) && isset($fields_modalform_names)) {
-    $fields_modalform = explode(',', str_replace(', ', ',', trim($fields_modalform)));
-    $fields_modalform_names = explode(',', str_replace(', ', ',', trim($fields_modalform_names)));
+    $fields_modalform = makeArrayFromStr($fields_modalform);
+    $fields_modalform_names = makeArrayFromStr($fields_modalform_names);
 } else {
     $fields_modalform = array();
 }
@@ -18,9 +23,9 @@ if (count($fields_modalform) == 0) {
     $fields_modalform = $fields;
     $fields_modalform_names = $fields_names;
 }
-$fields_for_popup_editor = explode(',', str_replace(', ', ',', trim($fields_for_popup_editor)));
-$fields_for_selector_filter = explode(',', str_replace(', ', ',', trim($fields_for_selector_filter)));
-$fields_readonly = explode(',', str_replace(', ', ',', trim($fields_readonly)));
+$fields_for_popup_editor = makeArrayFromStr($fields_for_popup_editor);
+$fields_for_selector_filter = makeArrayFromStr($fields_for_selector_filter);
+$fields_readonly = makeArrayFromStr($fields_readonly);
 $fields_readonly[] = $idField;
 $tpl = isset($tpl) && file_exists(MODX_BASE_PATH . '/assets/modules/' . $module_folder . '/tpl/' . trim($tpl) . '.tpl') ? trim($tpl) : 'main';
 $inline_edit = isset($inline_edit) && $inline_edit == '1' ? 'true' : 'false';
