@@ -26,6 +26,8 @@ if (isset($_REQUEST['module_id']) && (int)$_REQUEST['module_id'] > 0) {
 $idField = isset($idField) ? trim($idField) : false;
 $fields = isset($fields) ? explode(',', str_replace(', ', ',', trim($fields))) : false;
 $fields_names = isset($fields_names) ? explode(',', str_replace(', ', ',', trim($fields_names))) : false;
+$fields_modalform = isset($fields_modalform) ? explode(',', str_replace(', ', ',', trim($fields_modalform))) : $fields;
+$fields_modalform_names = isset($fields_modalform_names) ? explode(',', str_replace(', ', ',', trim($fields_modalform_names))) : $fields_names;
 $table = isset($table) ? trim($table) : false;
 $display = isset($display) && (int)$display > 0 ? (int)$display : 10;
 $fields_for_selector_filter = isset($fields_for_selector_filter) ? explode(',', str_replace(', ', ',', trim($fields_for_selector_filter))) : array();
@@ -157,7 +159,7 @@ switch($action) {
             if ($modx->db->getRecordCount($q) == 1) {
                 $row = $modx->db->getRow($q);
                 foreach ($row as $k => $v) {
-                    if (!in_array($k, $fields)) {
+                    if (!in_array($k, $fields_modalform)) {
                         unset($row[$k]);
                     }
                 }
@@ -169,7 +171,7 @@ switch($action) {
     case 'update_row'://обновляем данные из формы в модальном окне
         $arr = array();
         $resp = 'error';
-        foreach ($fields as $field) {
+        foreach ($fields_modalform as $field) {
             if (isset($_REQUEST[$field])) {
                 $arr[$field] = $modx->db->escape($_REQUEST[$field]);
             }

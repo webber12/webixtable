@@ -8,6 +8,16 @@ $idField = trim($idField);
 $display = (int)trim($display) > 0 ? (int)trim($display) : 10;
 $fields = explode(',', str_replace(', ', ',', trim($fields)));
 $fields_names = explode(',', str_replace(', ', ',', trim($fields_names)));
+if (isset($fields_modalform) && isset($fields_modalform_names)) {
+    $fields_modalform = explode(',', str_replace(', ', ',', trim($fields_modalform)));
+    $fields_modalform_names = explode(',', str_replace(', ', ',', trim($fields_modalform_names)));
+} else {
+    $fields_modalform = array();
+}
+if (count($fields_modalform) == 0) {
+    $fields_modalform = $fields;
+    $fields_modalform_names = $fields_names;
+}
 $fields_for_popup_editor = explode(',', str_replace(', ', ',', trim($fields_for_popup_editor)));
 $fields_for_selector_filter = explode(',', str_replace(', ', ',', trim($fields_for_selector_filter)));
 $fields_readonly = explode(',', str_replace(', ', ',', trim($fields_readonly)));
@@ -39,15 +49,12 @@ foreach ($fields as $k => $field) {
     switch (true) {
         case in_array($field, $fields_for_popup_editor):
             $editor = 'popup';
-            $formview = array('view' => 'textarea', 'label' => $fields_names[$k], 'name' => $field, 'height' => 100);
             break;
-        case ($field == 'date' || preg_match('/^date_/', $field)):
+        case ($field == 'date' || preg_match('/^date_/', $field) || preg_match('/(.*)_date$/', $field)):
             $editor = 'date';
-            $formview = array('view' => 'datepicker', 'label' => $fields_names[$k], 'name' => $field, 'timepicker' => true);
             break;
         default:
             $editor = 'text';
-            $formview = array('view' => 'text', 'label' => $fields_names[$k], 'name' => $field);
             break;
     }
     $tmp = array('id' => $field, header => array($fields_names[$k], array("content" => "serverFilter")), 'sort' => 'server', 'editor' => $editor, 'adjust' => true);
@@ -56,12 +63,27 @@ foreach ($fields as $k => $field) {
     }
     if (in_array($field, $fields_readonly)) {
         unset($tmp['editor']);
-        $formview['readonly'] = true;
     }
     $columns[] = $tmp;
+}
+$form_fields = array();
+foreach ($fields_modalform as $k => $field) {
+    switch (true) {
+        case in_array($field, $fields_for_popup_editor):
+            $formview = array('view' => 'textarea', 'label' => $fields_modalform_names[$k], 'name' => $field, 'height' => 100);
+            break;
+        case ($field == 'date' || preg_match('/^date_/', $field) || preg_match('/(.*)_date$/', $field)):
+            $formview = array('view' => 'datepicker', 'label' => $fields_modalform_names[$k], 'name' => $field, 'timepicker' => true);
+            break;
+        default:
+            $formview = array('view' => 'text', 'label' => $fields_modalform_names[$k], 'name' => $field);
+            break;
+    }
+    if (in_array($field, $fields_readonly)) {
+        $formview['readonly'] = true;
+    }
     $form_fields[] = $formview;
 }
-
 
 $search_form_fields = array();
 if ($field_for_date_filter) {
