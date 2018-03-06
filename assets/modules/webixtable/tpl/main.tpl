@@ -21,6 +21,7 @@
         <script type="text/javascript" charset="utf-8">
 
         webix.ready(function() {
+            webix.i18n.setLocale("ru-RU");
             webix.editors.$popup = {
                 date:{
                     view:"popup",
@@ -60,6 +61,15 @@
                 height:500,
                 scroll:"y"
             };
+            var search_form = {
+                view:"form",
+                id:"searchform",
+                elements: [
+                    { margin:5, cols:
+                        [+search_formfields+]
+                    },
+                ]
+            };
             webix.ui({
                 view:"window",
                 id:"win2",
@@ -85,8 +95,9 @@
                         { view:"button", type:"iconButton", icon:"plus", label:"Добавить", width:110, click:"add_row"}, 
                         { view:"button", type:"iconButton", icon:"trash",  label:"Удалить", width:110, click:"del_row" },
                         [+modal_edit_btn+]
-                        { view:"button", value:"Обновить", width:100, click:"refresh" }]
+                        { view:"button", type:"iconButton", icon:"refresh",  label:"Обновить", width:110, click:"refresh" }]
                     },
+                    [+add_search_form+]
                     { view:"datatable",
                         autoheight:true,select:"row",resizeColumn:true,
                         id:"mydatatable",
@@ -132,9 +143,9 @@
                 show_alert("Вы не выбрали строку для удаления", "alert-warning");
             }
         }
-        function refresh() {
+        function refresh(str = '') {
             $$("mydatatable").clearAll();
-            $$("mydatatable").load($$("mydatatable").config.url);
+            $$("mydatatable").load($$("mydatatable").config.url + str);
         }
         function edit_row(){
             var selected = $$("mydatatable").getSelectedId();
@@ -155,6 +166,14 @@
                     show_alert('Ошибка на сервере, попробуйте позднее', "alert-warning");
                 }
             });
+        }
+        function add_search() {
+            var obj = $$("searchform").getValues();
+            var str = '';
+            for (key in obj) {
+                str = str + '&' + key + '=' + obj[key];
+            }
+            refresh(str);
         }
         function show_alert(text, level) {
             webix.alert(text, level, function(result){});
