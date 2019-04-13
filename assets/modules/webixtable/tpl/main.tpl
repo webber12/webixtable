@@ -22,6 +22,11 @@
 
         webix.ready(function() {
             webix.i18n.setLocale("ru-RU");
+            webix.attachEvent("onBeforeAjax", 
+                function(mode, url, data, request, headers, files, promise){
+                    headers["X-Requested-With"] = "XMLHttpRequest";
+                }
+            );
             webix.editors.$popup = {
                 date:{
                     view:"popup",
@@ -121,15 +126,13 @@
         });
 
         function add_row() {
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '[+module_url+]action.php?action=get_next&module_id=[+module_id+]', false);
-            xhr.send();
-            if (xhr.status != 200) {
-                  show_alert(xhr.status + ': ' + xhr.statusText, "alert-warning");
-            } else {
-                var ins = {'[+idField+]' : xhr.responseText};
-                $$("mydatatable").add(ins, 0);
-            }
+            webix.ajax('[+module_url+]action.php?action=get_next&module_id=[+module_id+]').then(function(data){
+                var data = data.json();
+                if (typeof data.max != "undefined") {
+                    var ins = {'[+idField+]' : data.max};
+                    $$("mydatatable").add(ins, 0);
+                }
+            });
         }
         function del_row() {
             var selected = $$("mydatatable").getSelectedId();

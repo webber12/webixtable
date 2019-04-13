@@ -1,4 +1,5 @@
 <?php
+if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
 
 define('MODX_API_MODE', true);
 define('IN_MANAGER_MODE', true);
@@ -155,6 +156,7 @@ switch($action) {
     case 'get_next':
         $max = $modx->db->getValue("SELECT MAX(`" . $idField . "`) FROM " . $modx->getFullTableName($table));
         $out .= $max ? ($max + 1) : 1;
+        $out = json_encode(array('max' => $out));
         break;
 
     case 'get_row'://получаем данные для формы в модальное окно
@@ -195,3 +197,5 @@ switch($action) {
 }
 
 echo $out;
+}
+exit();
