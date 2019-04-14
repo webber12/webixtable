@@ -83,10 +83,10 @@
                 position:"center",
                 modal:true,
                 head:{
-                    view:"toolbar", margin:-4, cols:[
+                    view:"toolbar", margin:5, cols:[
                         {view:"label", label: "Редактирование данных" },
-                        {view:"icon", icon:"times-circle",
-                            click:"$$('win2').hide();"}
+                        {view:"icon", icon:"save", click:submit_form, tooltip:"Сохранить изменения"},
+                        {view:"icon", icon:"times-circle", click:"$$('win2').hide();", tooltip:"Закрыть без сохранения"}
                         ]
                 },
                 body:form
@@ -123,6 +123,26 @@
                     }
                 ]
             });
+            webix.ui({
+                view:"contextmenu",
+                id:"cmenu",
+                data:["Правка","Удалить"],
+                on:{
+                    onItemClick:function(id){
+                        var action = this.getItem(id).value;
+                        switch (action) {
+                            case 'Удалить':
+                                del_row();
+                                break;
+                            case 'Правка':
+                                edit_row();
+                                break;
+                            default:break;
+                        }
+                    }
+                }
+            });
+            $$("cmenu").attachTo($$("mydatatable"));
         });
 
         function add_row() {
@@ -163,7 +183,18 @@
         function submit_form() {
             webix.ajax().post("[+module_url+]action.php?action=update_row&module_id=[+module_id+]", $$("myform").getValues(), function(text, data, xhr){ 
                 if (text == 'ok') {
-                    refresh();
+                    var selected = $$("mydatatable").getSelectedId();
+                    webix.ajax("[+module_url+]action.php?action=get_row&module_id=[+module_id+]&key=" + selected).then(function(data){
+                        var data = data.json();
+                        var item = $$("mydatatable").getItem(selected);
+                        for (k in item) {
+                            if (k != 'id') {
+                                item[k] = data[k];
+                            }
+                        }
+                        $$("mydatatable").refresh();
+                    });
+                    //refresh();
                     show_alert('Изменения успешно сохранены', "alert-success");
                 } else {
                     show_alert('Ошибка на сервере, попробуйте позднее', "alert-warning");
