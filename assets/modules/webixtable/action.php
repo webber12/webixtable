@@ -24,7 +24,7 @@ if (isset($_REQUEST['module_id']) && (int)$_REQUEST['module_id'] > 0) {
         }
     }
 }
-if (!function_exists(makeArrayFromStr)) {
+if (!function_exists('makeArrayFromStr')) {
     function makeArrayFromStr($str, $sep = ',') {
         return array_map('trim', explode($sep, $str));
     }

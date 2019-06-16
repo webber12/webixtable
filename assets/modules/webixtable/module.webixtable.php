@@ -2,7 +2,7 @@
 if(!isset($_SESSION['mgrValidated']) || !$modx->hasPermission('exec_module')){
     die();
 }
-if (!function_exists(makeArrayFromStr)) {
+if (!function_exists('makeArrayFromStr')) {
     function makeArrayFromStr($str, $sep = ',') {
         return array_map('trim', explode($sep, $str));
     }
@@ -33,7 +33,7 @@ $modal_edit_btn = isset($modal_edit) && $modal_edit == '1' ? '{ view:"button", t
 $table = isset($table) ? trim($table) : false;
 $field_for_date_filter = isset($field_for_date_filter) && trim($field_for_date_filter) != '' ? trim($field_for_date_filter) : false;
 
-if (!function_exists(getSelectValues)) {
+if (!function_exists('getSelectValues')) {
     function getSelectValues($modx, $field, $table) {
         $out = array();
         $i = 0;
@@ -62,7 +62,7 @@ foreach ($fields as $k => $field) {
             $editor = 'text';
             break;
     }
-    $tmp = array('id' => $field, header => array($fields_names[$k], array("content" => "serverFilter")), 'sort' => 'server', 'editor' => $editor, 'adjust' => true);
+    $tmp = array('id' => $field, 'header' => array($fields_names[$k], array("content" => "serverFilter")), 'sort' => 'server', 'editor' => $editor, 'adjust' => true);
     if (in_array($field, $fields_for_selector_filter)) {
         $tmp['header'] = array($fields_names[$k], array("content" => "serverSelectFilter", "options" => getSelectValues($modx, $field, $table)));
     }
