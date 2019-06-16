@@ -75,7 +75,7 @@ $form_fields = array();
 foreach ($fields_modalform as $k => $field) {
     switch (true) {
         case in_array($field, $fields_for_popup_editor):
-            $formview = array('view' => 'textarea', 'label' => $fields_modalform_names[$k], 'name' => $field, 'height' => 100);
+            $formview = array('view' => 'ckeditor5', 'label' => $fields_modalform_names[$k], 'name' => $field, 'config' => array(), 'height' => '250');
             break;
         case ($field == 'date' || preg_match('/^date_/', $field) || preg_match('/(.*)_date$/', $field)):
             $formview = array('view' => 'datepicker', 'label' => $fields_modalform_names[$k], 'name' => $field, 'timepicker' => true);
