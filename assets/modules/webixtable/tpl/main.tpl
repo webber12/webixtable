@@ -119,9 +119,9 @@
                             template : "{common.first()} {common.prev()} {common.pages()} {common.next()} {common.last()}",
                             container:"wbx_pp"
                         },
-                        url: "[+module_url+]action.php?action=list&module_id=[+module_id+]",
-                        save: "[+module_url+]action.php?action=update&module_id=[+module_id+]",
-                        delete: "[+module_url+]action.php?action=delete&module_id=[+module_id+]"
+                        url: "[+module_url+]action.php?action=List&module_id=[+module_id+]",
+                        save: "[+module_url+]action.php?action=Update&module_id=[+module_id+]",
+                        delete: "[+module_url+]action.php?action=Delete&module_id=[+module_id+]"
                     }
                 ]
             });
@@ -148,7 +148,7 @@
         });
 
         function add_row() {
-            webix.ajax('[+module_url+]action.php?action=get_next&module_id=[+module_id+]').then(function(data){
+            webix.ajax('[+module_url+]action.php?action=GetNext&module_id=[+module_id+]').then(function(data){
                 var data = data.json();
                 if (typeof data.max != "undefined") {
                     var ins = {'[+idField+]' : data.max};
@@ -187,7 +187,7 @@
             if (typeof(selected) !== "undefined") {
                 $$("win2").getBody().clear();
                 $$("win2").show();
-                $$("myform").load("[+module_url+]action.php?action=get_row&module_id=[+module_id+]&key=" + selected);
+                $$("myform").load("[+module_url+]action.php?action=GetRow&module_id=[+module_id+]&key=" + selected);
             } else {
                 show_alert("Вы не выбрали строку для редактирования", "alert-warning");
             }
@@ -195,10 +195,10 @@
         function submit_form() {
             var mydatatable_state = $$("mydatatable").getState();
             webix.storage.local.put("mydatatable_state", mydatatable_state);
-            webix.ajax().post("[+module_url+]action.php?action=update_row&module_id=[+module_id+]", $$("myform").getValues(), function(text, data, xhr){ 
+            webix.ajax().post("[+module_url+]action.php?action=UpdateRow&module_id=[+module_id+]", $$("myform").getValues(), function(text, data, xhr){ 
                 if (text == 'ok') {
                     var selected = $$("mydatatable").getSelectedId();
-                    webix.ajax("[+module_url+]action.php?action=get_row&module_id=[+module_id+]&key=" + selected).then(function(data){
+                    webix.ajax("[+module_url+]action.php?action=GetRow&module_id=[+module_id+]&key=" + selected).then(function(data){
                         var data = data.json();
                         var item = $$("mydatatable").getItem(selected);
                         for (k in item) {

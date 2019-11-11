@@ -206,7 +206,7 @@ class MainController extends \WebixTable\BaseController
 
 /** ajax methods **/
 
-    public function list()
+    public function ajaxList()
     {
         $DLparams = array(
             'controller' => 'onetable',
@@ -273,7 +273,7 @@ class MainController extends \WebixTable\BaseController
         return json_encode($itogo);
     }
     
-    public function update()
+    public function ajaxUpdate()
     {
         $arr = array();
         $idField = $this->getCfg('idField');
@@ -312,13 +312,13 @@ class MainController extends \WebixTable\BaseController
         }
     }
     
-    public function get_next()
+    public function ajaxGetNext()
     {
         $max = $this->modx->db->getValue("SELECT MAX(`" . $this->getCfg('idField') . "`) FROM " . $this->getTable());
         return json_encode(array('max' => ($max ? ($max + 1) : 1)));
     }
     
-    public function get_row()
+    public function ajaxGetRow()
     {
         //получаем данные для формы в модальное окно.
         $out = '';
@@ -339,7 +339,7 @@ class MainController extends \WebixTable\BaseController
         return $out;
     }
     
-    public function update_row()
+    public function ajaxUpdateRow()
     {
         //обновляем данные из формы в модальном окне
         $arr = array();

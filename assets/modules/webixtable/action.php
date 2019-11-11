@@ -18,8 +18,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
         include_once 'controller/base.controller.php';
         $base = new \WebixTable\BaseController();
         $controller = $base->getController();
-        if (is_callable(array($controller, $action))) {
-            $out = call_user_func(array($controller, $action));
+        if (is_callable(array($controller, 'ajax' . $action))) {
+            $out = call_user_func(array($controller, 'ajax' . $action));
         }
     }
     echo $out;
