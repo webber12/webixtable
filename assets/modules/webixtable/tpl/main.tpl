@@ -2,17 +2,17 @@
 <html>
     <head>
     <link rel="stylesheet" href="media/style/common/font-awesome/css/font-awesome.min.css?v=4.7.0">
-    <link href="https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700&amp;subset=cyrillic" rel="stylesheet">
-    <link rel="stylesheet" href="[+module_url+]skin/webix.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.webix.com/edge/webix.min.css" type="text/css"> 
     <style>
         body.webix_full_screen{overflow:auto !important;}
-        .webix_view.webix_pager{margin-bottom:30px;}
+        /*.webix_view.webix_pager{margin-bottom:30px;}
         .webix_cell{-webkit-transition: all .3s,-moz-transition: all .3s,-o-transition: all .3s,transition: all .3s}
         .webix_cell:nth-child(odd){background-color:#f6f8f8;}
-        .webix_cell:hover{background-color: rgba(93, 109, 202, 0.16);}
+        .webix_cell:hover{background-color: rgba(93, 109, 202, 0.16);}*/
     </style>
-    <script src="[+module_url+]skin/webix.js" type="text/javascript"></script>
+    <script src="https://cdn.webix.com/edge/webix.min.js" type="text/javascript"></script>
     <script src="//cdn.webix.com/site/i18n/ru.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="https://cdn.webix.com/components/edge/ckeditor5/ckeditor5.js"></script>
     </head>
     <body style="background-color: #fafafa;">
         <div id="wbx_table" style="padding-bottom:20px;"></div>
@@ -50,7 +50,7 @@
                 elements: [
                     [+formfields+] ,
                     { margin:5, cols:[
-                        { view:"button", value: "Submit", type:"form", click:submit_form},
+                        { view:"button", value: "Submit", type:"form", css:"webix_primary", click:submit_form},
                         { view:"button", value: "Cancel", click: function (elementId, event) {
                             this.getTopParentView().hide();
                         }}
@@ -85,8 +85,8 @@
                 head:{
                     view:"toolbar", margin:5, cols:[
                         {view:"label", label: "Редактирование данных" },
-                        {view:"icon", icon:"save", click:submit_form, tooltip:"Сохранить изменения"},
-                        {view:"icon", icon:"times-circle", click:"$$('win2').hide();", tooltip:"Закрыть без сохранения"}
+                        {view:"icon", icon:"wxi-check", click:submit_form, tooltip:"Сохранить изменения"},
+                        {view:"icon", icon:"wxi-close", click:"$$('win2').hide();", tooltip:"Закрыть без сохранения"}
                         ]
                 },
                 body:form
@@ -97,14 +97,16 @@
                 rows:[
                     { view:"template", type:"header", template:"[+name+]"},
                     { view:"toolbar", id:"mybar", elements:[
-                        { view:"button", type:"iconButton", icon:"plus", label:"Добавить", width:110, click:"add_row"}, 
-                        { view:"button", type:"iconButton", icon:"trash",  label:"Удалить", width:110, click:"del_row" },
+                        { view:"button", type:"icon", icon:"wxi-plus-circle", label:"Добавить", width:120, css:"webix_primary", click:"add_row"}, 
+                        { view:"button", type:"icon", icon:"wxi-trash",  label:"Удалить", width:110, css:"webix_danger", click:"del_row" },
                         [+modal_edit_btn+]
-                        { view:"button", type:"iconButton", icon:"refresh",  label:"Обновить", width:110, click:"refresh" }]
+                        { view:"button", type:"icon", icon:"wxi-sync",  label:"Обновить", width:120, click:"refresh" },
+                        { view:"button", type:"icon", icon:"wxi-radiobox-blank",  label:"Сбросить", width:110, click:"resetTable" },]
                     },
                     [+add_search_form+]
                     { view:"datatable",
-                        autoheight:true,select:"row",resizeColumn:true,
+                        autoheight:true,select:"row",
+                        resizeColumn:true,
                         id:"mydatatable",
                         editable:[+inline_edit+],
                         editaction: "dblclick",
@@ -126,7 +128,7 @@
             webix.ui({
                 view:"contextmenu",
                 id:"cmenu",
-                data:["Правка","Удалить"],
+                data:[[+context_edit_btn+]"Удалить"],
                 on:{
                     onItemClick:function(id){
                         var action = this.getItem(id).value;
@@ -150,7 +152,7 @@
                 var data = data.json();
                 if (typeof data.max != "undefined") {
                     var ins = {'[+idField+]' : data.max};
-                    $$("mydatatable").add(ins, 0);
+                    $$("mydatatable").add(ins, 0).refresh();
                 }
             });
         }
@@ -166,9 +168,19 @@
                 show_alert("Вы не выбрали строку для удаления", "alert-warning");
             }
         }
+        function resetTable() {
+            $$("mydatatable").eachColumn( function(pCol) { var f = this.getFilter(pCol); if (f) if (f.value) f.value = ""; });
+            $$("mydatatable").clearAll();
+            $$("mydatatable").setState({});
+            $$("mydatatable").load($$("mydatatable").config.url);
+        }
         function refresh(str = '') {
             $$("mydatatable").clearAll();
-            $$("mydatatable").load($$("mydatatable").config.url + str);
+            $$("mydatatable").load($$("mydatatable").config.url + str, "json", refreshState);
+        }
+        function refreshState() {
+            var mydatatable_state = webix.storage.local.get("mydatatable_state");
+            if (mydatatable_state) {$$("mydatatable").setState(mydatatable_state);}
         }
         function edit_row(){
             var selected = $$("mydatatable").getSelectedId();
@@ -181,6 +193,8 @@
             }
         }
         function submit_form() {
+            var mydatatable_state = $$("mydatatable").getState();
+            webix.storage.local.put("mydatatable_state", mydatatable_state);
             webix.ajax().post("[+module_url+]action.php?action=update_row&module_id=[+module_id+]", $$("myform").getValues(), function(text, data, xhr){ 
                 if (text == 'ok') {
                     var selected = $$("mydatatable").getSelectedId();
