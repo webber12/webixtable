@@ -15,7 +15,7 @@ class MainController extends \WebixTable\BaseController
     
     protected $ckeditor_height = 250;
 
-    public function makeForm()
+    public function renderModulePage()
     {
         $output = '';
 
