@@ -206,6 +206,36 @@ class MainController extends \WebixTable\BaseController
 
 /** ajax methods **/
 
+    protected function makeListFilter($field)
+    {
+        switch (true) {
+            case (in_array($field, $this->getCfg('fields_for_selector_filter'))):
+                $filter = "`" . $field . "`='" . $this->modx->db->escape($_REQUEST['filter'][$field]) . "'";
+                break;
+            case (in_array($field, array('id', 'rid'))):
+                $filter = "`" . $field . "`='" . $this->modx->db->escape($_REQUEST['filter'][$field]) . "'";
+                break;
+            default:
+                $filter = "`" . $field . "` LIKE '%" . $this->modx->db->escape($_REQUEST['filter'][$field]) . "%'";
+                break;
+        }
+        return $filter;
+    }
+
+    protected function makeListDateFilter($addwhere)
+    {
+        $field_for_date_filter = $this->getCfg('field_for_date_filter');
+        if (isset($_REQUEST[$field_for_date_filter . '_from']) && $_REQUEST[$field_for_date_filter . '_from'] != '') {
+            $_from = date("Y-m-d", strtotime($_REQUEST[$field_for_date_filter . '_from'])) . " 00:00:00";
+            $addwhere[] = "`" . $field_for_date_filter . "`>='" . $_from . "' ";
+        }
+        if (isset($_REQUEST[$field_for_date_filter . '_to']) && $_REQUEST[$field_for_date_filter . '_to'] != '') {
+            $_to = date("Y-m-d", strtotime($_REQUEST[$field_for_date_filter . '_to'])) . " 23:59:59";
+            $addwhere[] = "`" . $field_for_date_filter . "`<= '" . $_to . "' ";
+        }
+        return $addwhere;
+    }
+
     public function ajaxList()
     {
         $DLparams = array(
@@ -220,7 +250,7 @@ class MainController extends \WebixTable\BaseController
             'display' => $this->getCfg('display'),
             'prepare' => array($this, 'DLprepare')
         );
-        $addwehere = array();
+        $addwhere = array();
         //имеем запрос с сервера
         if (isset($_REQUEST['continue']) && $_REQUEST['continue'] == 'true') {
             if (isset($_REQUEST['sort'])) {
@@ -236,34 +266,16 @@ class MainController extends \WebixTable\BaseController
                 $tmp = array();
                 foreach ($this->getCfg('fields') as $field) {
                     if (isset($_REQUEST['filter'][$field]) && !empty($_REQUEST['filter'][$field]) && $_REQUEST['filter'][$field] != "") {
-                        switch (true) {
-                            case (in_array($field, $this->getCfg('fields_for_selector_filter'))):
-                                $addwehere[] = "`" . $field . "`='" . $this->modx->db->escape($_REQUEST['filter'][$field]) . "'";
-                                break;
-                            case (in_array($field, array('id', 'rid'))):
-                                $addwehere[] = "`" . $field . "`='" . $this->modx->db->escape($_REQUEST['filter'][$field]) . "'";
-                                break;
-                            default:
-                                $addwehere[] = "`" . $field . "` LIKE '%" . $this->modx->db->escape($_REQUEST['filter'][$field]) . "%'";
-                                break;
-                        }
+                        $addwhere[] = $this->makeListFilter($field);
                     }
                 }
             }
         }
         if (!empty($this->getCfg('field_for_date_filter'))) {
-            $field_for_date_filter = $this->getCfg('field_for_date_filter');
-            if (isset($_REQUEST[$field_for_date_filter . '_from']) && $_REQUEST[$field_for_date_filter . '_from'] != '') {
-                $_from = date("Y-m-d", strtotime($_REQUEST[$field_for_date_filter . '_from'])) . " 00:00:00";
-                $addwehere[] = "`" . $field_for_date_filter . "`>='" . $_from . "' ";
-            }
-            if (isset($_REQUEST[$field_for_date_filter . '_to']) && $_REQUEST[$field_for_date_filter . '_to'] != '') {
-                $_to = date("Y-m-d", strtotime($_REQUEST[$field_for_date_filter . '_to'])) . " 23:59:59";
-                $addwehere[] = "`" . $field_for_date_filter . "`<= '" . $_to . "' ";
-            }
+            $addwhere = $this->makeListDateFilter($addwhere);
         }
-        if (!empty($addwehere)) {
-            $DLparams['addWhereList'] = implode(" AND ", $addwehere);
+        if (!empty($addwhere)) {
+            $DLparams['addWhereList'] = implode(" AND ", $addwhere);
         }
         $tmp = $this->modx->runSnippet("DocLister", $DLparams);
         $tmp2 = json_decode($tmp, TRUE);
