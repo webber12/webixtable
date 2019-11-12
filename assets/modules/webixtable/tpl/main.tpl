@@ -100,8 +100,8 @@
                         { view:"button", type:"icon", icon:"wxi-plus-circle", label:"Добавить", width:120, css:"webix_primary", click:"add_row"}, 
                         { view:"button", type:"icon", icon:"wxi-trash",  label:"Удалить", width:110, css:"webix_danger", click:"del_row" },
                         [+modal_edit_btn+]
-                        { view:"button", type:"icon", icon:"wxi-sync",  label:"Обновить", width:120, click:"refresh" },
-                        { view:"button", type:"icon", icon:"wxi-radiobox-blank",  label:"Сбросить", width:110, click:"resetTable" },]
+                        { view:"button", type:"icon", icon:"wxi-sync", label:"", tooltip:"Обновить данные", click:"refresh", autowidth:true  },
+                        { view:"button", type:"icon", icon:"wxi-radiobox-blank", label:"", tooltip:"Перегрузить полностью", click:"reload", autowidth:true },]
                     },
                     [+add_search_form+]
                     { view:"datatable",
@@ -225,6 +225,9 @@
         }
         function show_alert(text, level) {
             webix.alert(text, level, function(result){});
+        }
+        function reload() {
+            document.location.reload(true);
         }
         </script>
     </body>

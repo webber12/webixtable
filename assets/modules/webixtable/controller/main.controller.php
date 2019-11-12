@@ -387,9 +387,9 @@ class MainController extends \WebixTable\BaseController
     protected function prepare($data, $mode = 'OnBeforeListingData')
     {
         switch ($mode) {
-			case 'OnGetCfg':
-				//получаем массив $key=>value из конфига
-				break;
+            case 'OnGetCfg':
+                //получаем массив $key=>value из конфига
+                break;
             case 'OnAfterRenderColumns':
                 //дескрипторы колонок в таблице
                 break;
