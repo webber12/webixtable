@@ -78,7 +78,9 @@ class MainController extends \WebixTable\BaseController
     
     protected function getCfg($key)
     {
-        return !empty($this->cfg[$key]) ? $this->cfg[$key] : (!empty($this->cfg_defaults[$key]) ? $this->cfg_defaults[$key] : (in_array($key, $this->cfg_arrays) ? array() : ''));
+        $value = !empty($this->cfg[$key]) ? $this->cfg[$key] : (!empty($this->cfg_defaults[$key]) ? $this->cfg_defaults[$key] : (in_array($key, $this->cfg_arrays) ? array() : ''));
+        $data = $this->prepare(array($key => $value), 'OnGetCfg');
+        return $data[$key];
     }
     
     protected function getSelectValues($field, $table)
@@ -123,6 +125,7 @@ class MainController extends \WebixTable\BaseController
             }
             $columns[] = $tmp;
         }
+        $columns = $this->prepare($columns, 'OnAfterRenderColumns');
         return $columns;
     }
     
@@ -144,6 +147,7 @@ class MainController extends \WebixTable\BaseController
             }
             $search_form_fields[] = array('view' => 'button', 'type' => 'iconButton', 'icon' => 'search', 'label' => 'Найти', 'click' => 'add_search');
         }
+        $search_form_fields = $this->prepare($search_form_fields, 'OnAfterRenderSearchFields');
         return $search_form_fields;
     }
     
@@ -157,6 +161,7 @@ class MainController extends \WebixTable\BaseController
             }
             $form_fields[] = $formview;
         }
+        $form_fields = $this->prepare($form_fields, 'OnAfterRenderModalForm');
         return $form_fields;
     }
     
@@ -344,7 +349,7 @@ class MainController extends \WebixTable\BaseController
                         unset($row[$k]);
                     }
                 }
-                $row = $this->prepare($row, 'OnBeforeRenderModal');
+                $row = $this->prepare($row, 'OnBeforeRenderModalData');
                 $out .= json_encode($row);
             }
         }
@@ -379,10 +384,23 @@ class MainController extends \WebixTable\BaseController
 
 /** prepare methods **/
 
-    protected function prepare($data, $mode = 'OnBeforeListing')
+    protected function prepare($data, $mode = 'OnBeforeListingData')
     {
         switch ($mode) {
-            case 'OnBeforeListing':
+			case 'OnGetCfg':
+				//получаем массив $key=>value из конфига
+				break;
+            case 'OnAfterRenderColumns':
+                //дескрипторы колонок в таблице
+                break;
+            case 'OnAfterRenderModalForm':
+                //дексрипторы полей в модальной форме
+                break;
+            case 'OnAfterRenderSearchFields':
+                //дексрипторы полей для поиска
+                break;
+            case 'OnBeforeListingData':
+                //данные до вывода в таблицу
                 //$data['title'] .= ' add in prepare';
                 foreach ($data as $k => $v) {
                     if (preg_match('/^href_/', $k) && !empty($v)) {
@@ -391,13 +409,16 @@ class MainController extends \WebixTable\BaseController
                     }
                 }
                 break;
-            case 'OnBeforeRenderModal':
+            case 'OnBeforeRenderModalData':
+                //данные до вывода в модальную форму
                 //$data['title'] .= ' add in modal prepare';
                 break;
             case 'OnBeforeUpdateInline':
+                //данные перед сохранением из таблицы
                 //$data['title'] .= ' add in update inline prepare';
                 break;
             case 'OnBeforeUpdateModal':
+                //данные перед сохранением из модального окна
                 //$data['title'] .= ' add in update modal prepare';
                 break;
             default:
