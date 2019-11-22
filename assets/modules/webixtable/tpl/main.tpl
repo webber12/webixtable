@@ -2,7 +2,8 @@
 <html>
     <head>
     <link rel="stylesheet" href="media/style/common/font-awesome/css/font-awesome.min.css?v=4.7.0">
-    <link rel="stylesheet" href="https://cdn.webix.com/edge/webix.min.css" type="text/css"> 
+    <link rel="stylesheet" href="https://cdn.webix.com/edge/webix.min.css" type="text/css">
+    <link rel="stylesheet" href="[+module_url+]skin/skin.css" type="text/css">
     <style>
         body.webix_full_screen{overflow:auto !important;}
         /*.webix_view.webix_pager{margin-bottom:30px;}
@@ -14,7 +15,7 @@
     <script src="//cdn.webix.com/site/i18n/ru.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" src="https://cdn.webix.com/components/edge/ckeditor5/ckeditor5.js"></script>
     </head>
-    <body style="background-color: #fafafa;">
+    <body class="[+manager_theme_mode+]">
         <div id="wbx_table" style="padding-bottom:20px;"></div>
         <div id="wbx_pp" style="padding-bottom:20px;width:90%;"></div>
     
@@ -98,10 +99,11 @@
                     { view:"template", type:"header", template:"[+name+]"},
                     { view:"toolbar", id:"mybar", elements:[
                         { view:"button", type:"icon", icon:"wxi-plus-circle", label:"Добавить", width:120, css:"webix_primary", click:"add_row"}, 
-                        { view:"button", type:"icon", icon:"wxi-trash",  label:"Удалить", width:110, css:"webix_danger", click:"del_row" },
                         [+modal_edit_btn+]
                         { view:"button", type:"icon", icon:"wxi-sync", label:"", tooltip:"Обновить данные", click:"refresh", autowidth:true  },
-                        { view:"button", type:"icon", icon:"wxi-radiobox-blank", label:"", tooltip:"Перегрузить полностью", click:"reload", autowidth:true },]
+                        { view:"button", type:"icon", icon:"wxi-radiobox-blank", label:"", tooltip:"Перегрузить полностью", click:"reload", autowidth:true },
+                        { view:"button", type:"icon", icon:"wxi-trash",  label:"Удалить", width:110, css:"webix_danger", click:"del_row" },
+                        ]
                     },
                     [+add_search_form+]
                     { view:"datatable",

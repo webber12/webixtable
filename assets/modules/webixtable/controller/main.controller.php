@@ -45,6 +45,7 @@ class MainController extends \WebixTable\BaseController
         $plh = array(
             'module_id' => $module_id,
             'module_url' => $this->module_url,
+            'manager_theme_mode' => $this->modx->getConfig('manager_theme_mode') == 4 ? 'darkness' : '',
             'name' => $this->getCfg('name'),
             'table' => $this->getCfg('table'),
             'inline_edit' => $inline_edit,
