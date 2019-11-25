@@ -310,7 +310,10 @@ class MainController extends \WebixTable\BaseController
                         }
                     }
                     $arr = $this->prepare($arr, 'OnBeforeUpdateInline');
-                    $this->modx->db->update($arr, $this->getTable(), "`" . $idField . "`='" . $arr[$idField] . "'");
+                    $up = $this->modx->db->update($arr, $this->getTable(), "`" . $idField . "`='" . $arr[$idField] . "'");
+                    if ($up) {
+                        $arr = $this->prepare($arr, 'OnAfterUpdateInline');
+                    }
                 }
                 break;
             case 'insert':
@@ -372,6 +375,7 @@ class MainController extends \WebixTable\BaseController
         if (!empty($arr[$idField]) || (isset($arr[$idField]) && $arr[$idField] === 0)) {
             $up = $this->modx->db->update($arr, $this->getTable(), "`" . $idField . "`='" . $arr[$idField] . "'");
             if ($up) {
+                $arr = $this->prepare($arr, 'OnAfterUpdateModal');
                 $resp = 'ok';
             }
         }
@@ -398,13 +402,16 @@ class MainController extends \WebixTable\BaseController
         / OnBeforeRenderModalData - данные до вывода в модальную форму
         / OnBeforeUpdateInline - данные перед сохранением из таблицы
         / OnBeforeUpdateModal - данные перед сохранением из модального окна
+        / OnAfterUpdateInline - данные после сохранения из таблицы
+        / OnAfterUpdateModal - данные после сохранения из модального окна
         / to invoke prepare, just call $this->prepare($data, $mode)
-        / and suggest, that you`ve create method 'invoke' . $mode($data)
+        / and suggest, that you`ve created method 'invoke' . $mode($data)
         / that returns $data after work
+        / example: for $this->prepare($data, 'OnBeforeListingData') see method invokeOnBeforeListingData
         /
         */
         if (is_callable(array($this, 'invoke' . $mode))) {
-            call_user_func(array($this, 'invoke' . $mode), $data);
+            $data = call_user_func(array($this, 'invoke' . $mode), $data);
         }
         return $data;
     }
@@ -423,6 +430,7 @@ class MainController extends \WebixTable\BaseController
         }
         return $data;
     }
+
 /** end prepare methods **/
 
 }
