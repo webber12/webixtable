@@ -387,51 +387,42 @@ class MainController extends \WebixTable\BaseController
 
     protected function prepare($data, $mode = 'OnBeforeListingData')
     {
-        switch ($mode) {
-            case 'OnGetCfg':
-                //получаем массив $key=>value из конфига
-                break;
-            case 'OnAfterRenderColumns':
-                //дескрипторы колонок в таблице
-                break;
-            case 'OnAfterRenderModalForm':
-                //дексрипторы полей в модальной форме
-                break;
-            case 'OnAfterRenderSearchFields':
-                //дексрипторы полей для поиска
-                break;
-            case 'OnBeforeListingData':
-                //данные до вывода в таблицу
-                //$data['title'] .= ' add in prepare';
-                foreach ($data as $k => $v) {
-                    if (preg_match('/^href_/', $k) && !empty($v)) {
-                        $v = $this->modx->getConfig('site_url') . ltrim($v, '/');
-                        $data[$k] = '<a href="' . $v . '" target="_blank"><i class="fa fa-download" aria-hidden="true"></i></a>';
-                    }
-                }
-                break;
-            case 'OnBeforeRenderModalData':
-                //данные до вывода в модальную форму
-                //$data['title'] .= ' add in modal prepare';
-                break;
-            case 'OnBeforeUpdateInline':
-                //данные перед сохранением из таблицы
-                //$data['title'] .= ' add in update inline prepare';
-                break;
-            case 'OnBeforeUpdateModal':
-                //данные перед сохранением из модального окна
-                //$data['title'] .= ' add in update modal prepare';
-                break;
-            default:
-                break;
+        //defaults
+        /*
+        /
+        / OnGetCfg - получаем массив $key=>value из конфига
+        / OnAfterRenderColumns - дескрипторы колонок в таблице
+        / OnAfterRenderSearchFields - дексрипторы полей в модальной форме
+        / OnAfterRenderSearchFields - дексрипторы полей для поиска
+        / OnBeforeListingData - данные до вывода в таблицу
+        / OnBeforeRenderModalData - данные до вывода в модальную форму
+        / OnBeforeUpdateInline - данные перед сохранением из таблицы
+        / OnBeforeUpdateModal - данные перед сохранением из модального окна
+        / to invoke prepare, just call $this->prepare($data, $mode)
+        / and suggest, that you`ve create method 'invoke' . $mode($data)
+        / that returns $data after work
+        /
+        */
+        if (is_callable(array($this, 'invoke' . $mode))) {
+            call_user_func(array($this, 'invoke' . $mode), $data);
         }
         return $data;
     }
-    
+
     public function DLprepare(array $data = array(), $modx, $_DL, $_extDocLister) {
         return $this->prepare($data);
     }
 
+    public function invokeOnBeforeListingData($data)
+    {
+        foreach ($data as $k => $v) {
+            if (preg_match('/^href_/', $k) && !empty($v)) {
+                $v = $this->modx->getConfig('site_url') . ltrim($v, '/');
+                $data[$k] = '<a href="' . $v . '" target="_blank"><i class="fa fa-download" aria-hidden="true"></i></a>';
+            }
+        }
+        return $data;
+    }
 /** end prepare methods **/
 
 }
