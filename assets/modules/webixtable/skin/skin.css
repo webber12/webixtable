@@ -52,3 +52,8 @@
 .darkness .webix_pager{background:#282c34;}
 .darkness .webix_menu .webix_list_item{background:#282c34;transition:all 0.3s;}
 .darkness .webix_menu .webix_list_item:hover{background:#202329;color:#ffffff;}
+
+.darkness .webix_inp_counter_prev{background:#202329;color:rgb(189, 189, 189) !important;border-color:rgb(65, 68, 73);}
+.darkness .webix_inp_counter_next{background:#202329;color:rgb(189, 189, 189) !important;border-color:rgb(65, 68, 73);}
+.darkness .webix_inp_counter_value{background:#282c34;color:rgb(189, 189, 189) !important;border-color:rgb(65, 68, 73);}
+
