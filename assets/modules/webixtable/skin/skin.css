@@ -43,8 +43,9 @@
 .webix_column>div.webix_cell_select:focus, .webix_column>div.webix_column_select:focus, .webix_column>div.webix_row_select:focus{background:#ffffff;}
 .webix_column>div.webix_cell_select{border-bottom:1px solid #edeff0;border-left:1px solid #edeff0;border-right:1px solid #edeff0;padding-left:11px;padding-top:0}
 
- .webix_el_colorpicker input,  .webix_el_combo input,  .webix_el_datepicker input, .webix_el_search input, .webix_el_text input{-webkit-appearance:none;background:#ffffff;border:1px solid #dddddd;border-radius:0;color:#444444;font-size:.8125rem;height:100%;padding:0 9pt}
+.webix_el_colorpicker input,  .webix_el_combo input,  .webix_el_datepicker input, .webix_el_search input, .webix_el_text input{-webkit-appearance:none;background:#ffffff;border:1px solid #dddddd;border-radius:0;color:#444444;font-size:.8125rem;height:100%;padding:0 9pt}
 .webix_toolbar .webix_el_label .webix_el_box{color:#292b2c;padding-left:10px;}
+.webix_pager{background:#ffffff;}
 .webix_view .webix_pager_item{font-size: 12px;font-weight:400;border: solid 1px #d4d4d4;background: #fafafa;color:#292b2c;transition:all 0.3s;}
 .webix_view .webix_pager_item:hover{background:#e6e6e6!important;color:#292b2c!important;}
 .webix_view .webix_pager_item_selected{background:#e6e6e6;color:#292b2c;font-size: 12px;}
@@ -56,8 +57,6 @@
 .webix_cal_body .webix_cal_today .webix_cal_day_inner {box-shadow: inset 0 0 0 1px #1976d2;}
 .webix_cal_month_name,.webix_time_header .webix_cal_hours,.webix_time_header .webix_cal_minutes{color:#292b2c;}
 
-.webix_view .webix_pager_item:hover{background:#ffffff;}
-.webix_pager{background:#ffffff;}
 .webix_menu .webix_list_item{background:#ffffff;transition:all 0.3s;}
 .webix_menu .webix_list_item:hover{background:#fafafa;color:#ffffff;}
 
@@ -112,9 +111,8 @@
 .darkness .webix_column>div.webix_cell_select{border-bottom:1px solid #edeff0;border-left:1px solid #edeff0;border-right:1px solid #edeff0;padding-left:11px;padding-top:0}
 
 .darkness .webix_view{border-bottom-color:transparent !important;}
-.darkness  .webix_el_colorpicker input, .darkness  .webix_el_combo input, .darkness  .webix_el_datepicker input, .darkness .webix_el_search input, .darkness .webix_el_text input{-webkit-appearance:none;background:#282c34;border:1px solid #414449;border-radius:0;color:#bbbbbb;font-size:.8125rem;height:100%;padding:0 9pt}
+.darkness .webix_el_colorpicker input, .darkness  .webix_el_combo input, .darkness  .webix_el_datepicker input, .darkness .webix_el_search input, .darkness .webix_el_text input{-webkit-appearance:none;background:#282c34;border:1px solid #414449;border-radius:0;color:#bbbbbb;font-size:.8125rem;height:100%;padding:0 9pt}
 .darkness .webix_toolbar .webix_el_label .webix_el_box{color:#bbbbbb;padding-left:10px;}
-.darkness .webix_view .webix_pager_item{font-size: .8125rem;font-weight:400;/*font-size: .8125rem;height: 2.5em;line-height: 1.6;*/border: solid 1px #414449;background: #202329;color:#bbb;transition:all 0.3s;}
 
 .darkness .webix_view .webix_pager_item_selected{background:#1976d2}
 .darkness .webix_column>div, .darkness .webix_table_cell{border-bottom:1px solid #414449;border-right:1px solid #414449;padding:0 9pt}
@@ -123,8 +121,13 @@
 .darkness .webix_cal_body .webix_cal_today .webix_cal_day_inner {box-shadow: inset 0 0 0 1px #1976d2;}
 .darkness .webix_cal_month_name,.darkness .webix_time_header .webix_cal_hours,.darkness .webix_time_header .webix_cal_minutes{color:#bbb;}
 
-.darkness .webix_view .webix_pager_item:hover{background:#282c34;}
 .darkness .webix_pager{background:#282c34;}
+.darkness .webix_view .webix_pager_item{background:#202329;font-size: .8125rem;font-weight:400;border: solid 1px #414449;background: #202329;color:#bbb;transition:all 0.3s;}
+.darkness .webix_view .webix_pager_item:hover{background:#282c34!important;color:#ffffff!important;}
+.darkness .webix_view .webix_pager_item_selected{background:#282c34;font-size: 12px;color:#bdbdbd;border:solid 1px #414449;}
+.darkness .webix_view .webix_pager_item_selected:hover{background:#282c34!important;color:#bdbdbd;}
+.darkness .webix_view .webix_pager_item_selected:focus{background:#282c34!important;color:#bdbdbd;}
+
 .darkness .webix_menu .webix_list_item{background:#282c34;transition:all 0.3s;}
 .darkness .webix_menu .webix_list_item:hover{background:#202329;color:#ffffff;}
 
