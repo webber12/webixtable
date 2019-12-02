@@ -13,6 +13,7 @@
 .webix_view.webix_form{background:#fafafa;}
 .webix_el_datepicker{background:#fafafa !important;}
 .webix_el_box{background:#fafafa;}
+.webix_scroll_cont .webix_list_item{font-style:italic;font-size:12px;}
 
 .webix_button{font-size: .8125rem;height: 2.4em;line-height: 1.6;font-weight:400;border: solid 1px #dddddd;background: #fafafa;color:#292b2c;transition:all 0.3s;}
 .webix_button span{}
@@ -64,6 +65,7 @@
 .webix_inp_counter_next{background:#fafafa;color:#444444 !important;border-color:#dddddd;}
 .webix_inp_counter_value{background:#ffffff;color:#444444 !important;border-color:#dddddd;}
 
+.wide_counter .webix_inp_counter_value{width:83px!important;}
 
 .darkness{}
 .darkness .webix_view{background:#202329;color:#bdbdbd !important;}
@@ -97,7 +99,7 @@
 .darkness .webix_primary .webix_button:hover span{color:#1976d2;}
 .darkness .webix_secondary .webix_button:hover{background:#282c34;}
 .darkness .webix_danger .webix_button:hover{background:#282c34;}
-.darkness .webix_inp_static{color:#bbbbbb !important;background:#202329 !important;border: solid 1px #414449 !important;font-size: 0.8125rem;height: 2.4em;line-height: 1.6;font-weight:400;}
+.darkness .webix_inp_static{color:#bbbbbb !important;background:#282c34 !important;border: solid 1px #414449 !important;font-size: 0.8125rem;height: 2.4em;line-height: 1.6;font-weight:400;}
 .darkness .webix_icon_btn, .darkness .webix_input_icon{font-size:14px;}
 .darkness .webix_ss_body{color:#bbbbbb !important;font-size: 0.8125rem;line-height: 1.6;font-weight:400;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;}
 .darkness .webix_inp_label{color:#bbbbbb;font-size: 0.8125rem;line-height: 1.6;font-weight:400;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;}
@@ -134,3 +136,12 @@
 .darkness .webix_inp_counter_prev{background:#202329;color:#bdbdbd !important;border-color:#414449;}
 .darkness .webix_inp_counter_next{background:#202329;color:#bdbdbd !important;border-color:#414449;}
 .darkness .webix_inp_counter_value{background:#282c34;color:#bdbdbd !important;border-color:#414449;}
+
+.darkness .webix_el_datepicker{background:#202329 !important;}
+.darkness select{background:#282c34;border: solid 1px #414449;color:#bdbdbd;padding-left:10px;}
+.darkness select:focus{border-color:#414449;color:#ffffff;background:#202329;}
+.darkness .webix_scroll_cont .webix_list_item{border-bottom: solid 1px #414449;font-style:italic;font-size:12px;}
+.darkness .webix_section:before{background-color:#414449;}
+.darkness .webix_layout_line>.webix_section>.webix_template{background:#202329;color:#1976d2;border: solid 1px #414449;padding-top:3px;padding-bottom:3px;}
+.darkness .webix_custom_checkbox{color:#1976d2;}
+.darkness .webix_checkbox_1 .webix_custom_checkbox{color:#1976d2;}
