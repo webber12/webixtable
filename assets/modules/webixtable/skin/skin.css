@@ -72,7 +72,7 @@
 .darkness #wbx_table>.webix_view{border:solid 1px #414449;}
 .darkness .webix_window{border:solid 1px #414449!important;}
 .darkness .webix_win_head{border-bottom:solid 1px #414449;}
-.darkness .webix_header{color:#bdbdbd;border:none !important;font-size: 1.5em;line-height: 1.5rem;padding: 0.8rem;font-family:sans-serif;}
+.darkness .webix_header{color:#bdbdbd;}
 .darkness .webix_toolbar{background:#202329;border:none;border-top:solid 1px #414449;}
 .darkness .webix_form{color:#bdbdbd !important;border:none;border-top:solid 1px #414449;}
 .darkness .webix_dtable{border:none;}
