@@ -283,11 +283,13 @@ class MainController extends \WebixTable\BaseController
         if (!empty($addwhere)) {
             $DLparams['addWhereList'] = implode(" AND ", $addwhere);
         }
+        $DLparams = $this->prepare($DLparams, 'OnAfterMakeDLparams');
         $tmp = $this->modx->runSnippet("DocLister", $DLparams);
         $tmp2 = json_decode($tmp, TRUE);
         $rows = $tmp2['rows'];
         $total_count = $tmp2['total'];
         $itogo = array("data" => $rows, "pos" => (int)$_REQUEST['start'], "total_count" => $total_count);
+        $itogo = $this->prepare($itogo, 'OnAfterMakeListing');
         return json_encode($itogo);
     }
     
@@ -398,7 +400,9 @@ class MainController extends \WebixTable\BaseController
         / OnAfterRenderColumns - дескрипторы колонок в таблице
         / OnAfterRenderSearchFields - дексрипторы полей в модальной форме
         / OnAfterRenderSearchFields - дексрипторы полей для поиска
-        / OnBeforeListingData - данные до вывода в таблицу
+        / OnAfterMakeDLparams - DLparams перед вызовом DocLister для получения списка
+        / OnBeforeListingData - данные до вывода в таблицу (prepare for DL)
+        / OnAfterMakeListing - перед возвратом полученного общего списка
         / OnBeforeRenderModalData - данные до вывода в модальную форму
         / OnBeforeUpdateInline - данные перед сохранением из таблицы
         / OnBeforeUpdateModal - данные перед сохранением из модального окна
