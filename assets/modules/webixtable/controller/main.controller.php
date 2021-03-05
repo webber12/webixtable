@@ -322,7 +322,7 @@ class MainController extends \WebixTable\BaseController
                 if (!empty($arr) && isset($arr[$idField]) && $arr[$idField] != '') {
                     $this->modx->db->insert($arr, $this->getTable());
                 } else if ($idField == 'id') {
-                    $max = $this->modx->db->getValue("SELECT MAX(`" . $idField . "`) FROM " . $this->getTable());
+                    $max = $this->modx->db->getValue($modx->db->query("SELECT MAX(`" . $idField . "`) FROM " . $this->getTable()));
                     $max = $max ? ($max + 1) : 1;
                     $this->modx->db->insert(array('id' => $max), $this->getTable());
                 }
@@ -337,7 +337,7 @@ class MainController extends \WebixTable\BaseController
     
     public function ajaxGetNext()
     {
-        $max = $this->modx->db->getValue("SELECT MAX(`" . $this->getCfg('idField') . "`) FROM " . $this->getTable());
+        $max = $this->modx->db->getValue($modx->db->query("SELECT MAX(`" . $this->getCfg('idField') . "`) FROM " . $this->getTable()));
         return json_encode(array('max' => ($max ? ($max + 1) : 1)));
     }
     
