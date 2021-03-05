@@ -39,7 +39,7 @@ class BaseController
     {
         $params = array();
         if (isset($_REQUEST['module_id']) && (int)$_REQUEST['module_id'] > 0) {
-            $prop = $this->modx->db->getValue($modx->db->query("SELECT properties FROM " . $this->modx->getFullTableName("site_modules") . " WHERE id=" . (int)$_REQUEST['module_id'] . " LIMIT 0,1"));
+            $prop = $this->modx->db->getValue($this->modx->db->query("SELECT properties FROM " . $this->modx->getFullTableName("site_modules") . " WHERE id=" . (int)$_REQUEST['module_id'] . " LIMIT 0,1"));
             if (!empty($prop)) {
                 $params = $this->modx->parseProperties($prop);
             }
