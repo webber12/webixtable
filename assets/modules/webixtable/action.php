@@ -2,6 +2,7 @@
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     define('MODX_API_MODE', true);
     define('IN_MANAGER_MODE', true);
+    define('NO_TRACY', true);
 
     include_once(__DIR__ . "/../../../index.php");
     $modx->db->connect();
@@ -22,6 +23,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !empty($_SERVER['HTTP_X_REQUESTE
             $out = call_user_func(array($controller, 'ajax' . $action));
         }
     }
+    header('Content-Type: application/json; charset=utf-8');
     echo $out;
     exit();
 }
